@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: myapp-deploy
+  name: myapp-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp-deploy
+  template:
+    metadata:
+      labels:
+        app: myapp-deploy
+    spec:
+      containers:
+      - image: nginx:latest
+        name: nginx
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: myapp-deploy
+  name: myapp-svc
+spec:
+  ports:
+  - name: myapp-port
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: myapp-deploy
+  type: LoadBalancer
+
+
